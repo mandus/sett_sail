@@ -14,4 +14,22 @@ module.exports.bootstrap = function(cb) {
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   cb();
+
+//  // Let's bootstrap by adding a few things:
+//  // But now it will do this every time - we probably doesn't want that...
+//  Items.create([{
+//      text: 'This is a first item'
+//  }, {
+//      text: 'This is a second item'
+//  }]).exec({
+//      error: function (err) {
+//          console.log('Unable to add first items to db', err);
+//          cb(err);
+//      },
+//
+//      success: function(result) {
+//          console.log('Everything is fine in init - moving on');
+//          cb();
+//      }
+//  });
 };
