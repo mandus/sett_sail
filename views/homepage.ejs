@@ -36,5 +36,50 @@
             connection string in your environment, and use <tt>url:
                 process.env.MONGOLAB_URI</tt> in the DB adapter settings in
             connections.js</li>
+        <li>Added benefit; just set
+            <tt>MONGOLAB_URI=mongodb://localhost:27017/sails</tt>
+            in order to connect to the local db - for easy development!
+        </li>
+        <li>NOTE: it does not work so well if there are several sails-mongo
+            adapters defined at the same time in the connections.js!
+    </ul>
+
+    <h2>Adding authentication</h2>
+    <p>Our app is up until now completely open. We will like to add some
+    protection, at least to the create and destroy api end-points, while
+    probably leaving read items open for now.</p>
+    <ul>
+        <li>Let's try installing <tt>npm install sails-generate-auth
+                --save</tt></li>
+        <li>Next, <tt>sails generate auth</tt>. This will add quite a few files
+            to the project. For instance, take a look at
+            <tt>api/models/User.js</tt>
+        </li>
+        <li>I will not support any "local" logins, so I am going to configure
+            Passport for twitter, github, facebook, and google:
+            <ul>
+                <li>npm install passport-twitter --save</li>
+                <li>npm install passport-github --save</li>
+                <li>npm install passport-facebook --save</li>
+                <li>npm install passport-google --save</li>
+            </ul>
+        </li>
+        <li>Open <tt>config/passport.js</tt> and remove all the stuff you 
+            don't want to use, leaving only twitter, github, facebook and google in
+            there.
+        </li>
+        <li>Visit <a href="https://apps.twitter.com">twitter apps</a>, 
+            <a href="https://github.com/settings/applications">github apps</a>,
+            <a href="https://developers.facebook.com/apps/">facebook apps</a>,
+            and <a href="https://console.developers.google.com/project">google
+                dev console</a> to create the necessary apps and grab IDs and
+            secrets.
+        </li>
+        <li>Add a call to <tt>sails.services.passport.loadStrategies()</tt> before the bootstrap callback in
+            <tt>bootstrap.js</tt>.
+        </li>
+        <li>Change <tt>'*': true</tt> into <tt>'*': ['passport']</tt> in
+            <tt>config/policies.js</tt>.
+        </li>
     </ul>
 </div>
