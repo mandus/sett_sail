@@ -1,0 +1,27 @@
+<!-- Default home page -->
+<div ng-app="SettSail" ng-controller="BaseCtrl"> 
+    <h1>Mainpage</h1>
+
+    <ul ng-repeat="item in items">
+        <li>{{item.id}}: {{item.text}}</li>
+    </ul>
+
+    <h2>How api works</h2>
+    <ul>
+        <li>Generate api with: 
+            <tt>
+                sails generate api items
+            </tt>
+        </li>
+        <li>Add item at the url:
+            <tt>
+                /items/create?text=foo
+            </tt>
+        </li>
+        <li>Delete item at the url:
+            <tt>
+                /items/destroy?id=2
+            </tt>
+        </li>
+    </ul>
+</div>
