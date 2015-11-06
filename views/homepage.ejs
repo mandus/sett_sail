@@ -32,5 +32,9 @@
         <li>Then run mongo by <tt>mongod --dbpath
                 /some/path/to/mongodb/data/db</tt>. The default dbpath is 
             <tt>/data/db</tt>, i.e. used if not specified.</li>
+        <li>When using e.g. MongoLabs, set the <tt>MONGOLAB_URI</tt> with the
+            connection string in your environment, and use <tt>url:
+                process.env.MONGOLAB_URI</tt> in the DB adapter settings in
+            connections.js</li>
     </ul>
 </div>
