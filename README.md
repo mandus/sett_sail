@@ -1,3 +1,4 @@
 # sett_sail
 
-a [Sails](http://sailsjs.org) application
+A Very Basic [Sails](http://sailsjs.org) application. I'm just testing out this
+stuff

@@ -1,8 +1,8 @@
 {
   "name": "sett_sail",
   "private": true,
-  "version": "0.0.0",
-  "description": "a Sails application",
+  "version": "0.0.1",
+  "description": "A Basic Sails application",
   "keywords": [],
   "dependencies": {
     "ejs": "~0.8.4",
@@ -30,7 +30,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/aasmundo/sett_sail.git"
+    "url": "git://github.com/mandus/sett_sail.git"
   },
   "author": "aasmundo",
   "license": ""
