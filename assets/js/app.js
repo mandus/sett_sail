@@ -1,6 +1,8 @@
-angular.module('SettSail', []);
+// The root-module
+var app = angular.module('SettSail', []);
+
 //angular.module('SettSail').controller('BaseCtrl', ['$scope', '$http', function ($scope, $http)
-angular.module('SettSail').controller('BaseCtrl', ['$scope', function ($scope)
+app.controller('BaseCtrl', ['$scope', function ($scope)
 {
     // Get over socket:
     // Load initial data:
@@ -48,4 +50,16 @@ angular.module('SettSail').controller('BaseCtrl', ['$scope', function ($scope)
 //        id: 2,
 //        text: 'b',
 //    }];
+}]);
+
+
+app.controller('AddItemCtrl', ['$scope', '$http', function ($scope, $http) {
+    $scope.addItem = function() {
+        var text = $scope.new_item_text;
+        if (text == '') {
+            console.log('SettSail.AddItemCtrl.addItem: Unable to find data');
+            return false;
+        }
+        $http.post('/items/create', {text: text});
+    };
 }]);

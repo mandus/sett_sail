@@ -1,11 +1,34 @@
 <!-- Default home page -->
-<div ng-app="SettSail" ng-controller="BaseCtrl"> 
+<div class="container" ng-app="SettSail" ng-controller="BaseCtrl"> 
+
+    <% if (!req.user) { %>
+    <a href="/login">Login</a>
+    <% } else { %>
+    <a href="/logout">Logout <%= req.user.username %></a>
+    <% } %>
     <h1>Mainpage</h1>
 
+    <% if (req.user) { %>
+    <div class="row" ng-controller="AddItemCtrl">
+        <div class="col-md-2">Text:</div>
+        <div class="col-md-10">
+            <input type="text" ng-model="new_item_text" name="text" placeholder="text" />
+        </div>
+        <div class="col-md-12">
+            <button ng-click="addItem()" class="button">Add item</button>
+        </div>
+    </div>
+    <% } %>
     <ul ng-repeat="item in items">
-        <li>{{item.id}}: {{item.text}}</li>
+        <li>{{item.id}}: {{item.text}}
+            <br>
+            Owner: {{item.owner.username}}
+        </li>
     </ul>
 
+    <h1>What I have done</h1>
+    <p>I like to outline the steps I went through to get this page running
+    </p>
     <h2>How api works</h2>
     <ul>
         <li>Generate api with: 
@@ -49,19 +72,28 @@
     protection, at least to the create and destroy api end-points, while
     probably leaving read items open for now.</p>
     <ul>
-        <li>Let's try installing <tt>npm install sails-generate-auth
-                --save</tt></li>
+        <li>Let's try installing <tt>npm install sails-generate-auth --save</tt></li>
         <li>Next, <tt>sails generate auth</tt>. This will add quite a few files
             to the project. For instance, take a look at
             <tt>api/models/User.js</tt>
         </li>
-        <li>I will not support any "local" logins, so I am going to configure
+        <li>I will not support any "local" logins, buth I am going to configure
             Passport for twitter, github, facebook, and google:
             <ul>
                 <li>npm install passport-twitter --save</li>
                 <li>npm install passport-github --save</li>
                 <li>npm install passport-facebook --save</li>
-                <li>npm install passport-google --save</li>
+                <li>npm install passport-google-oauth --save</li>
+                <li>npm install passport-oauth1 --save</li>
+            </ul>
+            The following dependencies was not included automatically for
+            me:
+            <ul>
+                <li>npm install passport-oauth1 --save</li>
+                <li>npm install passport-oauth2 --save</li>
+                <li>npm install passport --save</li>
+                <li>npm install validator --save</li>
+                <li>npm install validator --save</li>
             </ul>
         </li>
         <li>Open <tt>config/passport.js</tt> and remove all the stuff you 
@@ -75,11 +107,96 @@
                 dev console</a> to create the necessary apps and grab IDs and
             secrets.
         </li>
+        <li>The Client IDs and secrets should be treated as credentials (which
+            the in fact are), and should at least never go into open source
+            code - and better not in code at all. My approach is to use
+            environment variables, like we did for the MongoDB; e.g TW_CKEY and
+            TW_CSEC for the Twitter consumer-key and secret. Update the
+            <tt>passport.js</tt> file using <tt>process.env.TW_CKEY</tt> for
+            the <tt>consumerKey</tt> option in the Twitter passport; similar
+            for all the other options. 
+        </li>
+        <li>For Twitter we can also override the callbackUrl - for easier
+            development it can be beneficial to also set this callback in the
+            environment, but this can also go into the dev/prod environment
+            overrides.
+        </li>
         <li>Add a call to <tt>sails.services.passport.loadStrategies()</tt> before the bootstrap callback in
             <tt>bootstrap.js</tt>.
         </li>
         <li>Change <tt>'*': true</tt> into <tt>'*': ['passport']</tt> in
             <tt>config/policies.js</tt>.
         </li>
+        <li>Tweak the login-template that has been created in
+            <tt>views/auth/login.ejs</tt> according to your liking. While login
+            now will if the keys and callback-url have been set correctly,
+            you will still not be able to access user-information in each
+            handler automatically.
+        </li>
+        <li><strike>After doing quite a bit of searching, I came accross a post on the 
+            interwebs, over at <a href="http://www.tysoncadenhead.com/blog/using-facebook-authentication-on-a-sails-js-app#.Vj5wK66rTUI">Tyson Cadenhead</a>
+            that contained the missing piece for me; while everything is kind
+            of working now, we need a small piece of middleware-logic for the
+            express webserver that will inject the user into the request
+            object. Create the file <tt>config/express.js</tt> and insert the
+            following piece of code:
+            <pre>
+var passport = require('passport');
+
+module.exports.express = {
+    customMiddleware: function(app) {
+        // Add passport in the middleware chain
+        app.use(passport.initialize());
+        app.use(passport.session());
+
+        app.use(function(req, res, next) {
+            res.locals.user = req.session.user;
+            next();
+        });
+    }
+};
+            </pre>
+            This information is of course, when looking in retrospect,
+            available from multiple sources - I just happen to first get it in
+            a way that fitted my image from that page.</strike>
+        </li>
+        <li>After looking further, guided by deprecated-messages appearing in
+            console where I lifted sails, I figured out that we are not
+            supposed to use <tt>express.js</tt> config anymore, but rather add
+            initialization of passport directly in the middleware in
+            <tt>config/http.js</tt>. All that was needed was adding 
+            <tt>passportInit: require('passport').initialize()</tt> and 
+            <tt>passportSession: require('passport').session()</tt> in the
+            <tt>middleware</tt> section and add those to items after the
+            <tt>session</tt> entry in the <tt>order</tt> list the same place.
+            Ultimately, I found this information in the sails documentation, at
+            <a href="http://www.sailsjs.org/documentation/concepts/middleware">the middleware</a> docs. So, note to self, remember to
+            read the docs!
+        </li>
     </ul>
+    <h2>Adding some security</h2>
+    <p>Now that we have logon in place, we will like to be able to add an owner
+    to the items, and in the default listing show only items that belong to a
+    particular user.</p>
+    <li>Start by setting shortcuts to <tt>false</tt> in
+        <tt>config/blueprints.js</tt> to avoid that too much stuff just happen.
+    </li>
+    <li>Next, override the <tt>create</tt> function in the
+        <tt>ItemsController</tt>. If user is not authenticated, we will just
+        return forbidden, but if the user is authenicated we will pick up data
+        from the request and create an item.
+    </li>
+    <li>Also, we make sure that the create-method only create an item on POST
+        requests, mainly because browsers are so chatty when doing GET, due to
+        fancy prefetching.
+    </li>
+    <li>We add owner to each of the Items in the model, as User. We also add a
+        collection of items to each User, linked by the owner-property.
+    </li>
+    <li>Next, we add a simple form on this page for adding new items, with a
+        function in angular-controller that will be called when a submit-button
+        is clicked. In the <tt>create</tt> method in the controller, we check
+        the <tt>text</tt> parameter in the request object by
+        <tt>req.param('text')</tt>, and creates a new item.
+    </li>
 </div>

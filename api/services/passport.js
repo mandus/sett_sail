@@ -79,14 +79,23 @@ passport.connect = function (req, query, profile, next) {
     return next(new Error('No authentication provider was identified.'));
   }
 
+
+  /**
+   * NOTE: If we later want to be able to link multiple passports to one
+   * account, we can instead use provider-linked email/username here, something
+   * like user.provider_email[provider] = profile.emails[0].value 
+   * and user.provider_username[provider] = profile.username
+   */
+
   // If the profile object contains a list of emails, grab the first one and
-  // add it to the user.
+  // add it to the user. (email is unique accross providers)
   if (profile.hasOwnProperty('emails')) {
     user.email = profile.emails[0].value;
   }
   // If the profile object contains a username, add it to the user.
+  // Our usernames will be local to the provider
   if (profile.hasOwnProperty('username')) {
-    user.username = profile.username;
+    user.username = provider + ':' + profile.username;
   }
 
   // If neither an email or a username was available in the profile, we don't

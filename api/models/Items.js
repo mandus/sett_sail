@@ -10,6 +10,14 @@ module.exports = {
   attributes: {
       text: {
           type: 'string'
+      },
+      owner: {
+          model: 'User'
+      },
+      visibility: {
+          type: 'string',
+          enum: ['public', 'groups', 'personal'],
+          defaultsTo: 'personal'
       }
   }
 };

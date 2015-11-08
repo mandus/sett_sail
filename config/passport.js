@@ -20,8 +20,9 @@ module.exports.passport = {
     protocol: 'oauth',
     strategy: require('passport-twitter').Strategy,
     options: {
-      consumerKey: 'gFrSvjbnntHLPKCLyZjj7w',
-      consumerSecret: '7PNHZxIcHDpT1oSWj5cnBfjPSXLq4xF0r5TpEYL4iE'
+      consumerKey: process.env.TW_CKEY,
+      consumerSecret: process.env.TW_CSEC,
+      callbackUrl: 'http://localhost:1337/auth/twitter/callback'
     }
   },
 
@@ -30,8 +31,9 @@ module.exports.passport = {
     protocol: 'oauth2',
     strategy: require('passport-github').Strategy,
     options: {
-      clientID: 'ce3a5ea51d03f622d8bb',
-      clientSecret: '0673dc762187d9b88c99844d579996e01427f8c0'
+      clientID: process.env.GH_CID,
+      clientSecret: process.env.GH_CSEC,
+      callbackURL: 'http://localhost:1337/auth/github/callback'
     }
   },
 
@@ -40,8 +42,9 @@ module.exports.passport = {
     protocol: 'oauth2',
     strategy: require('passport-facebook').Strategy,
     options: {
-      clientID: '871961309586742',
-      clientSecret: '91609d8bbbb4564a38b837725335d613',
+      clientID: process.env.FB_CID,
+      clientSecret: process.env.FB_CSEC,
+      callbackURL: 'http://localhost:1337/auth/facebook/callback',
       scope: ['email'] /* email is necessary for login behavior */
     }
   },
@@ -51,9 +54,10 @@ module.exports.passport = {
     protocol: 'oauth2',
     strategy: require('passport-google-oauth').OAuth2Strategy,
     options: {
-      clientID: '146042990330-69o0uert57a1eamh7thp4kkt6jbca817.apps.googleusercontent.com',
-      clientSecret: 'BHYHYbzp25Jj3dEusaCLBJ8Q'
+      clientID: process.env.GOO_CID,
+      clientSecret: process.env.GOO_CSEC,
+      callbackURL: 'http://localhost:1337/auth/google/callback',
+      scope: ['email']
     }
   }
-
 };
