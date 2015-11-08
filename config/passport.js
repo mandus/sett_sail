@@ -22,7 +22,7 @@ module.exports.passport = {
     options: {
       consumerKey: process.env.TW_CKEY,
       consumerSecret: process.env.TW_CSEC,
-      callbackUrl: 'http://localhost:1337/auth/twitter/callback'
+      callbackUrl: 'https://settsail.herokuapp.com/auth/twitter/callback'
     }
   },
 
@@ -33,7 +33,7 @@ module.exports.passport = {
     options: {
       clientID: process.env.GH_CID,
       clientSecret: process.env.GH_CSEC,
-      callbackURL: 'http://localhost:1337/auth/github/callback'
+      callbackURL: 'https://settsail.herokuapp.com/auth/github/callback'
     }
   },
 
@@ -44,7 +44,7 @@ module.exports.passport = {
     options: {
       clientID: process.env.FB_CID,
       clientSecret: process.env.FB_CSEC,
-      callbackURL: 'http://localhost:1337/auth/facebook/callback',
+      callbackURL: 'https://settsail.herokuapp.com/auth/facebook/callback',
       scope: ['email'] /* email is necessary for login behavior */
     }
   },
@@ -56,7 +56,7 @@ module.exports.passport = {
     options: {
       clientID: process.env.GOO_CID,
       clientSecret: process.env.GOO_CSEC,
-      callbackURL: 'http://localhost:1337/auth/google/callback',
+      callbackURL: 'https://settsail.herokuapp.com/auth/google/callback',
       scope: ['email']
     }
   }
