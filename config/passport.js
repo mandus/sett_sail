@@ -22,7 +22,7 @@ module.exports.passport = {
     options: {
       consumerKey: process.env.TW_CKEY,
       consumerSecret: process.env.TW_CSEC,
-      callbackUrl: 'https://settsail.herokuapp.com/auth/twitter/callback'
+      // callbackUrl: 'https://settsail.herokuapp.com/auth/twitter/callback'
     }
   },
 
