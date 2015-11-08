@@ -176,6 +176,15 @@ module.exports.express = {
             <a href="http://www.sailsjs.org/documentation/concepts/middleware">the middleware</a> docs. So, note to self, remember to
             read the docs!
         </li>
+        <li>In order to get the callbacks to work better (in some cases work at
+            all), I introduced <tt>APP_BASEURL</tt> in the environment, and set
+            it to the correct url. I then updated the callbackULR in the passport 
+            entries to be based on this variable, and also set the
+            <tt>baseUrl</tt> in <tt>api/services/passport.js</tt> by reading
+            <tt>process.env.APP_BASEURL</tt>. This solves problems with twitter 
+            and github login (although github refuses to redirect to
+            localhost, only to the callback set in the twitter-app.).
+        </li>
     </ul>
     <h2>Adding some security</h2>
     <p>Now that we have logon in place, we will like to be able to add an owner
