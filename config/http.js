@@ -34,6 +34,7 @@ module.exports.http = {
        'startRequestTimer',
        'cookieParser',
        'session',
+       'flash',
        'passportInit',
        'passportSession',
        'myRequestLogger',
