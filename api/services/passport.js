@@ -118,11 +118,27 @@ passport.connect = function (req, query, profile, next) {
       //           authentication provider.
       // Action:   Create a new user and assign them a passport.
       if (!passport) {
+        // Save user-email in scope in case I need it...
+        var user_email = user.email;
         User.create(user, function (err, user) {
           if (err) {
             if (err.code === 'E_VALIDATION') {
               if (err.invalidAttributes.email) {
-                req.flash('error', 'Error.Passport.Email.Exists');
+                  // Try to connect new passport to old user with same email
+                  User.findOne({email: user_email}, function (err, user) {
+                      if (err) {
+                          req.flash('error', 'Error.Passport.Email.Exists');
+                          return next(err);
+                      }
+                      query.user = user.id;
+                      Passport.create(query, function (err, passport) {
+                          // bail out if a passport wasn't created
+                          if (err) {
+                              return next(err);
+                          }
+                          next(err, user);
+                      });
+                  });
               }
               else {
                 req.flash('error', 'Error.Passport.User.Exists');

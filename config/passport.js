@@ -52,12 +52,13 @@ module.exports.passport = {
   google: {
     name: 'Google',
     protocol: 'oauth2',
-    strategy: require('passport-google-oauth').OAuth2Strategy,
+    //strategy: require('passport-google-oauth').OAuth2Strategy,
+    strategy: require('passport-google-oauth2').Strategy,
     options: {
       clientID: process.env.GOO_CID,
       clientSecret: process.env.GOO_CSEC,
       callbackURL: process.env.APP_BASEURL + '/auth/google/callback',
-      scope: ['email']
+      scope: ['profile', 'email']
     }
   }
 };

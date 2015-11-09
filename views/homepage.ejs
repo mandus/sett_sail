@@ -4,7 +4,7 @@
     <% if (!req.user) { %>
     <a href="/login">Login</a>
     <% } else { %>
-    <a href="/logout">Logout <%= req.user.username %></a>
+    <a href="/logout">Logout <%= req.user.username || req.user.email %></a>
     <% } %>
     <h1>Mainpage</h1>
 
@@ -25,7 +25,7 @@
     <ul ng-repeat="item in items">
         <li>{{item.id}}: {{item.text}}
             <br>
-            Owner: {{item.owner.username}}
+            Owner: {{item.owner.username || item.owner.email}}
         </li>
     </ul>
 
