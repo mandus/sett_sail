@@ -204,25 +204,27 @@ module.exports.express = {
     <p>Now that we have logon in place, we will like to be able to add an owner
     to the items, and in the default listing show only items that belong to a
     particular user.</p>
-    <li>Start by setting shortcuts to <tt>false</tt> in
-        <tt>config/blueprints.js</tt> to avoid that too much stuff just happen.
-    </li>
-    <li>Next, override the <tt>create</tt> function in the
-        <tt>ItemsController</tt>. If user is not authenticated, we will just
-        return forbidden, but if the user is authenicated we will pick up data
-        from the request and create an item.
-    </li>
-    <li>Also, we make sure that the create-method only create an item on POST
-        requests, mainly because browsers are so chatty when doing GET, due to
-        fancy prefetching.
-    </li>
-    <li>We add owner to each of the Items in the model, as User. We also add a
-        collection of items to each User, linked by the owner-property.
-    </li>
-    <li>Next, we add a simple form on this page for adding new items, with a
-        function in angular-controller that will be called when a submit-button
-        is clicked. In the <tt>create</tt> method in the controller, we check
-        the <tt>text</tt> parameter in the request object by
-        <tt>req.param('text')</tt>, and creates a new item.
-    </li>
+    <ul>
+        <li>Start by setting shortcuts to <tt>false</tt> in
+            <tt>config/blueprints.js</tt> to avoid that too much stuff just happen.
+        </li>
+        <li>Next, override the <tt>create</tt> function in the
+            <tt>ItemsController</tt>. If user is not authenticated, we will just
+            return forbidden, but if the user is authenicated we will pick up data
+            from the request and create an item.
+        </li>
+        <li>Also, we make sure that the create-method only create an item on POST
+            requests, mainly because browsers are so chatty when doing GET, due to
+            fancy prefetching.
+        </li>
+        <li>We add owner to each of the Items in the model, as User. We also add a
+            collection of items to each User, linked by the owner-property.
+        </li>
+        <li>Next, we add a simple form on this page for adding new items, with a
+            function in angular-controller that will be called when a submit-button
+            is clicked. In the <tt>create</tt> method in the controller, we check
+            the <tt>text</tt> parameter in the request object by
+            <tt>req.param('text')</tt>, and creates a new item.
+        </li>
+    </ul>
 </div>
