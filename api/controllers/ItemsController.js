@@ -13,17 +13,14 @@ module.exports = {
             console.log('Not authenticated; not allowed to create item');
             return res.forbidden();
         }
-        console.log('User is authenticated, and will create an item', req.user.username);
-        console.log('Method is ', req.method);
         if (!(req.method === 'POST')) {
-            console.log('We only allow POST creates');
+            console.log('We only allow create on POST');
             return res.forbidden();
         }
         var text = req.param('text');
         var owner = req.user.id;
         var item = {text: text, owner: owner};
         if (text && owner) { 
-            console.log("We're going to create ", item);
             Items.create(item, function (err, item) {
                 if (err) {
                     return res.negotiate(err);

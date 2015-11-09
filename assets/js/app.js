@@ -17,9 +17,13 @@ app.controller('BaseCtrl', ['$scope', function ($scope)
         console.log("Got event verb: " + event.verb);
         switch (event.verb) {
             case 'created':
-                // Just push the new entry
-                $scope.items.push(event.data);
-                $scope.$apply();
+                // Just push the new entry will not work, linked entities like
+                // owner is not included.
+                // $scope.items.push(event.data);
+                io.socket.get('/items/' + event.data.id, function (item) {
+                    $scope.items.push(item);
+                    $scope.$apply();
+                });
                 break;
             case 'destroyed':
                 // Can probably just reset the whole array - angular should
@@ -60,6 +64,6 @@ app.controller('AddItemCtrl', ['$scope', '$http', function ($scope, $http) {
             console.log('SettSail.AddItemCtrl.addItem: Unable to find data');
             return false;
         }
-        $http.post('/items/create', {text: text});
+        $http.post('/items/create', {text: text}).success(function (data) {$scope.new_item_text = '';});
     };
 }]);

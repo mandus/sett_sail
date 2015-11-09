@@ -25,7 +25,7 @@
     <ul ng-repeat="item in items">
         <li>{{item.id}}: {{item.text}}
             <br>
-            Owner: {{item.owner.username || item.owner.email}}
+            Owner: {{item.owner.username || item.owner.email || item.owner.id}}
         </li>
     </ul>
 
