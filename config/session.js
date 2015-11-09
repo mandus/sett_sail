@@ -12,7 +12,16 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.session.html
  */
 
-console.log(process.env.REDIS_URL);
+
+// I dig out the redis-settings from the redis-URL, which doesn't seems to
+// work:
+var r = process.env.REDIS_URL;
+var pattern = /redis:\/\/h:([^@]*)@([^:]*):(\d*)/;
+re_match = r.match(pattern);
+var passwd = re_match[1];
+var host = re_match[2];
+var port = re_match[3];
+
 
 module.exports.session = {
 
@@ -54,12 +63,12 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-  url: process.env.REDIS_URL, 
-  // host: 'localhost',
-  // port: 6379,
+  //jurl: process.env.REDIS_URL, 
+  host: host,
+  port: port,
   // ttl: <redis session TTL in seconds>,
   // db: 0,
-  // pass: <redis auth password>,
+  pass: passwd,
   // prefix: 'sess:',
 
 
