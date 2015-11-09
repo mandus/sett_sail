@@ -12,6 +12,8 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.session.html
  */
 
+console.log(process.env.REDIS_URL);
+
 module.exports.session = {
 
   /***************************************************************************
