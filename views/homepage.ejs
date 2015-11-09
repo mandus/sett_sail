@@ -185,6 +185,20 @@ module.exports.express = {
             and github login (although github refuses to redirect to
             localhost, only to the callback set in the twitter-app.).
         </li>
+        <li>For facebook-login, remember to add a Contact Email in the
+            Settings-section for the app, and set a valid oauth redirect URL in
+            the Client Oauth settings in the Advanced settings-section. Also
+            remember to flip the switch that will make the app live - it's
+            at the top of Stauts &amp; Review.
+        </li>
+        <li>For google-login, Google+ API must be enabled. Open the application
+            in the console, and find the Google+ API in the APIs section under
+            the APIs &amp; auth label. Enable the API. Also, remember to add
+            all possible and valid redirect URLs for the app, which should be
+            done by going to the Credentials section under the APIs &amp; auth
+            label, opening the page for the login-app, and adding urls at the
+            bottom of the page.
+        </li>
     </ul>
     <h2>Adding some security</h2>
     <p>Now that we have logon in place, we will like to be able to add an owner
