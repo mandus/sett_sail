@@ -21,9 +21,6 @@ re_match = r.match(pattern);
 var passwd = re_match[1];
 var host = re_match[2];
 var port = re_match[3];
-console.log(r);
-console.log(host);
-console.log(port);
 
 module.exports.session = {
 
