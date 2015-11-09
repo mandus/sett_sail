@@ -226,5 +226,19 @@ module.exports.express = {
             the <tt>text</tt> parameter in the request object by
             <tt>req.param('text')</tt>, and creates a new item.
         </li>
+        <li>Items received over the io.socket, pushed from the
+            <tt>publishCreate</tt> function, does not automatically include
+            linked entities, such as owner (maybe because I need to add them?).
+            The simplest way to handle this case is to fetch the full object,
+            with the linked entities, when receiving the socket-update. Since
+            we have the is, that is easy.
+        </li>
     </ul>
+    <h2>Adding redis cache</h2>
+    <p>Adding redis cache for handling sessions is straight forward as most of
+    what we need is already in the session.js config. The only thing I did
+    really was to write a quick regex that will splitt the redis-url into
+    password, host and portnumber - as the old redis connect package that sails
+    seems to require does not work so well with the full url format. 
+    </p>
 </div>
