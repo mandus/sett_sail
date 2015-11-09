@@ -60,10 +60,20 @@ app.controller('BaseCtrl', ['$scope', function ($scope)
 app.controller('AddItemCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.addItem = function() {
         var text = $scope.new_item_text;
+        var is_public = $scope.item_is_public;
+        var visibility = 'personal';
         if (text == '') {
             console.log('SettSail.AddItemCtrl.addItem: Unable to find data');
             return false;
         }
-        $http.post('/items/create', {text: text}).success(function (data) {$scope.new_item_text = '';});
+        
+        if (is_public) {
+            visibility = 'public';
+        }
+        $http.post('/items/create', {text: text, visibility: visibility})
+            .success(function (data) {
+                $scope.new_item_text = '';
+                $scope.item_is_public = false;
+            });
     };
 }]);

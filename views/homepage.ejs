@@ -15,15 +15,23 @@
     <div class="row" ng-controller="AddItemCtrl">
         <div class="col-md-2">Text:</div>
         <div class="col-md-10">
-            <input type="text" ng-model="new_item_text" name="text" placeholder="text" />
+            <input type="text" ng-model="new_item_text" name="text" placeholder="text" >
         </div>
-        <div class="col-md-12">
+        <div class="col-md-2">
+            Public: <input type="checkbox" 
+                           ng-checked="item_is_public"
+                           ng-init="item_is_public = false"
+                           ng-model="item_is_public">
+        </div>
+        <div class="col-md-10">
             <button ng-click="addItem()" class="button">Add item</button>
         </div>
     </div>
     <% } %>
     <ul ng-repeat="item in items">
         <li>{{item.id}}: {{item.text}}
+            <br>
+            Visibility: {{item.visibility}}
             <br>
             Owner: {{item.owner.username || item.owner.email || item.owner.id}}
         </li>
